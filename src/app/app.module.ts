@@ -8,6 +8,9 @@ import { GraphicComponent } from './graphic/graphic.component';
 
 import { RhythmChannelComponent } from './rhythm-channel/rhythm-channel.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DialogComponent } from './dialog/dialog.component';
+import {MatButtonModule, MatDialogModule} from '@angular/material';
+import {DialogService} from './services/dialog.service';
 import {DataService} from './services/data.service';
 import {SignalsService} from './services/signals.service';
 
@@ -17,16 +20,20 @@ import {SignalsService} from './services/signals.service';
     AppComponent,
     GraphicComponent,
     RhythmChannelComponent,
+    DialogComponent
   ],
   entryComponents: [
+    DialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    MatButtonModule,
+    MatDialogModule,
     HttpClientModule
   ],
-  providers: [DataService,SignalsService],
+  providers: [DialogService,DataService,SignalsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

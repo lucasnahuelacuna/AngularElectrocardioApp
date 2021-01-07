@@ -4,8 +4,10 @@ import { Chart} from '../modules/chart';
 import { Reference } from '../modules/reference';
 import { Signal } from '../modules/signal';
 import { RhythmChannelComponent } from '../rhythm-channel/rhythm-channel.component';
+import { DialogService } from '../services/dialog.service';
 import { DataService } from '../services/data.service';
 import { SignalsService } from '../services/signals.service';
+import { DialogData } from '../shared/dialog-data';
 
 @Component({
   selector: 'app-graphic',
@@ -14,8 +16,6 @@ import { SignalsService } from '../services/signals.service';
 })
 export class GraphicComponent implements OnInit {
   private value: string;
- //private aux: any;
-
   private width: number;
   private height: number;
   private chart_width: number;
@@ -44,6 +44,7 @@ export class GraphicComponent implements OnInit {
 
 
   constructor(private dataService: DataService,
+              private dialogService: DialogService,
               private signalsService: SignalsService) {
     var screen_width=screen.availWidth;
     var screen_height=screen.availHeight;
@@ -199,6 +200,28 @@ export class GraphicComponent implements OnInit {
 
   shift_right(){
     this.graphicData.shift_right();
+  }
+
+  openDialog() {
+
+    const dialogData: DialogData = {
+      title: 'Ajustar tamaño grilla',
+      message: 'Medir con una regla la longitud (en cm) de la línea azul',
+      showOKBtn: true,
+      showCancelBtn: true
+    };
+
+    const dialogRef = this.dialogService.openDialog(
+      dialogData, {disableClose: true});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.value= this.dataService.getValue();
+        this.updateUnitPattern(this.value);
+      } else {
+        //User clicked Cancel
+      }
+    });
   }
 
   private drawGraph(){
