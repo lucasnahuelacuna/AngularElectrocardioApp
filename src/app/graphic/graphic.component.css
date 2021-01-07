@@ -1,0 +1,88 @@
+#container {
+    /*border: 1px solid black;*/
+    background: #d9d9d9;
+  }
+
+  .nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+  }
+
+  .b1{
+  background-color: #f1f1f1;
+  }
+
+  .b2{
+  background-color: #FCEB9C;
+  }
+
+  /*select {
+    background-color: gainsboro;
+    color: black;
+    padding: 3px;
+    border: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+  }*/
+
+  .button {
+    background-color: white;
+    border-width:3px;
+    border-color:#63C1DC;
+    border-radius: 5px;
+    width: 40px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: black;
+    padding: 3px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+  }
+
+  .button-2 {
+    background-color: white;
+    color: black;
+    border-width:3px;
+    width: 85px;
+    border-color:#63C1DC;
+    border-radius: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 3px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+  }
+
+  .button_rhythm{
+    color: #000;
+    font-size: 1.5rem;
+    max-height: 2.5rem;
+    padding: 0;
+    min-width: 2.5rem;
+    margin-left: 0.5rem;
+    background-color: #63C1DC;
+  }
+
+  .border-4 {
+    border-width:4px !important;
+    border-color:#63C1DC !important;
+  }
+
+  .select{
+    border-width:3px !important;
+    border-color:#63C1DC !important;
+    border-radius: 5px;
+    /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
+    font-size: 12px;
+    margin: 2px;
+  }
+
+  .button_dialog {
+      background-color: #63C1DC;
+      color: black;
+      margin-left: 2px;
+      margin-right: 2px;
+      padding: 3px;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 12px;
+    }
