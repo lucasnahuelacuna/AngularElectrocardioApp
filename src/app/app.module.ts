@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GraphicComponent } from './graphic/graphic.component';
+import { RhythmChannelComponent } from './rhythm-channel/rhythm-channel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GraphicComponent
+    GraphicComponent,
+    RhythmChannelComponent
   ],
   imports: [
     BrowserModule
