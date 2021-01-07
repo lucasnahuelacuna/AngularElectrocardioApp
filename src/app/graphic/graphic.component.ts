@@ -3,6 +3,9 @@ import * as d3 from 'd3';
 import { Chart} from '../modules/chart';
 import { Reference } from '../modules/reference';
 import { Signal } from '../modules/signal';
+import { RhythmChannelComponent } from '../rhythm-channel/rhythm-channel.component';
+import { DataService } from '../services/data.service';
+import { SignalsService } from '../services/signals.service';
 
 @Component({
   selector: 'app-graphic',
@@ -36,9 +39,12 @@ export class GraphicComponent implements OnInit {
   private beats_flag: boolean;
   private pattern_unit: number; //Unidad patrón de referencia con la que se dibuja la grilla y las derivaciones
   private time_position: number;
-  
+  @ViewChild('graphicData', { static: false }) graphicData: RhythmChannelComponent; //Acceder a las propiedades y métodos del componente rhythm-channel
 
-  constructor() {
+
+
+  constructor(private dataService: DataService,
+              private signalsService: SignalsService) {
     var screen_width=screen.availWidth;
     var screen_height=screen.availHeight;
     this.width= 0.9*screen_width;
@@ -57,9 +63,14 @@ export class GraphicComponent implements OnInit {
     this.pattern_unit=5; //Se utilizan 5 px por defecto como unidad patrón de graficación
     this.time_position=0; //Al comiezo se grafica desde la posición correspondiente a los 0 segundos
 
+    this.value= dataService.getValue();
+
   }
 
   ngOnInit() {
+    this.signalsService.getJSON().subscribe(data => {
+       this.signal.set_derivations(data);   //Se realiza la carga de las derivaciones con la
+    });                                     //información proveniente del fichero
     this.initSvg();
     this.drawGraph();
   }
@@ -88,22 +99,33 @@ export class GraphicComponent implements OnInit {
       case '1/4':
           this.gainScale="2.5 mm/mV";
           this.speedScale="6.25 mm/S";
+          this.graphicData.speedScale=this.speedScale;
+          this.graphicData.speedChanged();
+
         break;
       case '1/2':
           this.gainScale="5 mm/mV";
           this.speedScale="12.5 mm/S";
+          this.graphicData.speedScale=this.speedScale;
+          this.graphicData.speedChanged();
         break;
       case '1':
           this.gainScale="10 mm/mV";
           this.speedScale="25 mm/S";
+          this.graphicData.speedScale=this.speedScale;
+          this.graphicData.speedChanged();
         break;
       case '2':
           this.gainScale="20 mm/mV";
           this.speedScale="50 mm/S";
+          this.graphicData.speedScale=this.speedScale;
+          this.graphicData.speedChanged();
         break;
       case '4':
           this.gainScale="40 mm/mV";
           this.speedScale="100 mm/S";
+          this.graphicData.speedScale=this.speedScale;
+          this.graphicData.speedChanged();
         break;
     }
     this.drawGraph();
@@ -113,12 +135,21 @@ export class GraphicComponent implements OnInit {
     this.derivations=selectedValue;
     this.bandera=true;
     this.drawGraph();
+    //Pasaje de la información de la señal al componente rhythm-channel
+    this.graphicData.signal=this.signal;
+    this.graphicData.signalChanged();
+    this.graphicData.derivation=this.derivations;
+    this.graphicData.derivationChanged();
   }
 
   speedChanged(selectedValue: string){
     this.speedScale=selectedValue;
     this.bandera=true;
     this.drawGraph();
+    //Pasaje de la información de la señal al componente rhythm-channel
+    this.graphicData.speedScale=this.speedScale;
+    this.graphicData.speedChanged();
+
   }
 
   gainChanged(selectedValue: string){
@@ -146,6 +177,28 @@ export class GraphicComponent implements OnInit {
       this.beats_flag=false;
     }
     this.drawGraph();
+  }
+
+  updateUnitPattern(datoDelPopup: string) {      //Actualiza la unidad patrón con las que se
+    let medida: number= Number(datoDelPopup);    //dibuja la grilla y las derivaciones
+    this.pattern_unit= 200/(10*medida);          //La línea de referencia que se muestra al usuario es de 200px
+    this.drawGraph();
+    //Pasaje de la unidad de referecia para graficar al componente rhythm-channel
+    this.graphicData.pattern_unit=this.pattern_unit;
+    this.graphicData.patternUnitChanged();
+   }
+
+   positionChanged(time_position: number){
+    this.time_position= time_position;
+    this.drawGraph();
+  }
+
+  shift_left(){
+    this.graphicData.shift_left();
+  }
+
+  shift_right(){
+    this.graphicData.shift_right();
   }
 
   private drawGraph(){
